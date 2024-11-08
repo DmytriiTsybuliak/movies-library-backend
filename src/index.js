@@ -1,7 +1,10 @@
-import express from "express";
 
-const PORT = 5000;
+import { setupServer } from "./server.js";
 
-const app = express();
 
-app.listen(PORT, () => console.log('Server Started'));
+
+const bootstrap = async () => {
+    setupServer();
+};
+
+bootstrap();
