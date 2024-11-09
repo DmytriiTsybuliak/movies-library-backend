@@ -1,7 +1,8 @@
 import express from 'express';
 import pino from 'pino-http';
 import cors from 'cors';
-import { env } from './utils/env';
+import { env } from './utils/env.js';
+import router from './routers/index.js';
 
 
 const PORT = Number(env('PORT', '6000'));
@@ -10,6 +11,7 @@ export const setupServer = () => {
     const app = express();
     app.use(express.json());
     app.use(cors());
+    app.use('/', router);
     app.use(
         pino({
             transport: {
