@@ -1,4 +1,6 @@
 import { model, Schema } from 'mongoose';
+import bcrypt from "bcrypt";
+
 
 const userSchema = new Schema(
     {
@@ -23,14 +25,20 @@ const userSchema = new Schema(
         avatar: {
             type: String,
             default: 'https://res.cloudinary.com/dztvd7emk/image/upload/v1722885715/xc2jhivn8gspetouuroy.jpg'
-        },
-        favorites: {
-            type: Array,
-            default: null,
         }
     },
     { timestamps: true, versionKey: false },
 );
+
+userSchema.pre('save', async function (next) {
+    if (!this.isModified('password')) return next();
+    this.password = await bcrypt.hash(this.password, 12);
+    next();
+});
+
+userSchema.methods.correctPassword = async function (candidatePassword, userPassword) {
+    return await bcrypt.compare(candidatePassword, userPassword);
+};
 
 userSchema.methods.toJSON = function () {
     const obj = this.toObject();
@@ -38,4 +46,4 @@ userSchema.methods.toJSON = function () {
     return obj;
 };
 
-export const UserCollection = model('user', userSchema);
+export const User = model('user', userSchema);
