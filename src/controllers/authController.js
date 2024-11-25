@@ -1,14 +1,9 @@
-import createHttpError from "http-errors";
-import { User } from "../db/models/userModel.js";
 import { loginService, registerService } from "../services/authService.js";
 
 
 export const registerController = async (req, res) => {
     try {
-        const { email, password } = req.body;
-        const checkUser = await User.findOne({ email: email });
-        if (checkUser) throw createHttpError(409, 'Email in use');
-        const { user, token } = await registerService(email, password);
+        const { user, token } = await registerService(req.body);
 
         res.status(201).json({
             status: 'success',
@@ -31,17 +26,13 @@ export const registerController = async (req, res) => {
 
 export const loginController = async (req, res) => {
     try {
-        const { email, password } = req.body;
-        const { user, token } = await loginService(email, password);
+        const session = await loginService(req.body);
 
         res.status(200).json({
             status: 'success',
-            token,
             data: {
-                user: {
-                    id: user._id,
-                    email: user.email,
-                },
+                accessToken: session.accessToken,
+
             },
         });
     } catch (error) {
