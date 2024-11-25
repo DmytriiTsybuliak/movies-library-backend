@@ -40,10 +40,12 @@ userSchema.methods.correctPassword = async function (candidatePassword, userPass
     return await bcrypt.compare(candidatePassword, userPassword);
 };
 
+
+
 userSchema.methods.toJSON = function () {
     const obj = this.toObject();
     delete obj.password;
     return obj;
 };
 
-export const User = model('user', userSchema);
+export const User = model('users', userSchema);
