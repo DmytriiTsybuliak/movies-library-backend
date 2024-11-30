@@ -36,17 +36,17 @@ export const loginService = async (payload) => {
         throw createHttpError(401, `Unauthorized - password is not correct`);
     }
 
-    //clear all sessions if refreshToken expired for indicated user._id
+    //clear all sessions, where refreshToken expired for current user._id
     await SessionsCollection.deleteMany({
         userId: user._id,
         refreshTokenValidUntil: { $lt: new Date() },
     });
 
     const accessToken = generateAccessToken(user._id);
-    console.log('accessToken', accessToken);
+    // console.log('accessToken', accessToken);
 
     const refreshToken = generateRefreshToken(user._id);
-    console.log('refreshToken', refreshToken);
+    // console.log('refreshToken', refreshToken);
 
     return await SessionsCollection.create({
         userId: user._id,
@@ -54,5 +54,48 @@ export const loginService = async (payload) => {
         refreshToken,
         accessTokenValidUntil: new Date(Date.now() + parseTimeString(env('JWT_EXPIRES_IN'))),
         refreshTokenValidUntil: new Date(Date.now() + parseTimeString(env('JWT_REFRESH_EXPIRES_IN'))),
+    });
+};
+
+export const logoutService = async (sessionId) => {
+    await SessionsCollection.deleteOne({ _id: sessionId });
+};
+
+const createSession = () => {
+    const accessToken = generateAccessToken(new Date(Date.now()));
+    const refreshToken = generateRefreshToken(new Date(Date.now()));
+
+    return {
+        accessToken,
+        refreshToken,
+        accessTokenValidUntil: new Date(Date.now() + parseTimeString(env('JWT_EXPIRES_IN'))),
+        refreshTokenValidUntil: new Date(Date.now() + parseTimeString(env('JWT_REFRESH_EXPIRES_IN'))),
+    };
+};
+
+export const refreshUsersSession = async ({ sessionId, refreshToken }) => {
+    const session = await SessionsCollection.findOne({
+        _id: sessionId,
+        refreshToken,
+    });
+
+    if (!session) {
+        throw createHttpError(401, 'Session not found');
+    }
+
+    const isSessionTokenExpired =
+        new Date() > new Date(session.refreshTokenValidUntil);
+
+    if (isSessionTokenExpired) {
+        throw createHttpError(401, 'Session token expired');
+    }
+
+    const newSession = createSession();
+
+    await SessionsCollection.deleteOne({ _id: sessionId, refreshToken });
+
+    return await SessionsCollection.create({
+        userId: session.userId,
+        ...newSession,
     });
 };
