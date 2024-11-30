@@ -3,7 +3,7 @@ import pino from 'pino-http';
 import cors from 'cors';
 import { env } from './utils/env.js';
 import router from './routers/index.js';
-
+import cookieParser from 'cookie-parser';
 
 const PORT = Number(env('PORT', '6000'));
 
@@ -11,6 +11,9 @@ export const setupServer = () => {
     const app = express();
     app.use(express.json());
     app.use(cors());
+    app.use(cookieParser());
+
+
     app.use('/', router);
     app.use(
         pino({
@@ -19,7 +22,6 @@ export const setupServer = () => {
             },
         }),
     );
-
 
     app.get('/', (req, res) => {
         res.status(200).json('Server works');
@@ -32,25 +34,15 @@ export const setupServer = () => {
     });
 
     app.use((err, req, res, next) => {
-        res.status(500).json({
+        const status = err.status || 500;
+        res.status(status).json({
             message: 'Something went wrong',
             error: err.message,
         });
     });
 
-
     app.listen(PORT, () => {
         console.log(`Server is running on port ${PORT}`);
     });
 
-
-    // app.use(cors());
-
-
-
-    // app.use(router);
-
-    // app.use('*', notFoundHandler);
-
-    // app.use(errorHandler);
 };
