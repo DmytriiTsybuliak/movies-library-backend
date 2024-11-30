@@ -2,9 +2,16 @@ import { model, Schema } from 'mongoose';
 
 const favoriteSchema = new Schema(
     {
-        favorites: {
-            type: Array,
-            default: null,
+        title: {
+            type: String,
+            required: [true, 'Title is required'],
+        },
+        releaseDate: {
+            type: String,
+            required: [true, 'ReleaseDate is required'],
+        },
+        genre: {
+            type: String,
         },
         userId: {
             type: Schema.Types.ObjectId,

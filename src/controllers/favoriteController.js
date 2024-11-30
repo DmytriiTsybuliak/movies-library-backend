@@ -1,19 +1,38 @@
-import { addFavourite } from "../services/favorite.js";
+import createHttpError from "http-errors";
+import { addFavorite, getFavorite, removeFavorite } from "../services/favorite.js";
 
-export const addFavoriteMovieController = async (req, res) => {
+export const addFavoriteCtrl = async (req, res) => {
     const data = req.body;
-    const userID = '672f81ea7338ca63ab7dc966';
-    // const userID = req.user;
-    // console.log(userID);
+    const userID = req.user;
+    console.log(data);
+    console.log(userID._id);
+    const favorite = await addFavorite(userID._id, data);
+    res.status(201).json({
+        status: 201,
+        message: 'Successfully added favorite',
+        data: favorite,
+    });
+};
 
-    try {
-        const favorite = await addFavourite(userID, data);
-        res.status(201).json({
-            status: 201,
-            message: 'Successfully added favorite',
-            data: favorite,
-        });
-    } catch (error) {
-        res.status(500).json({ message: error.message });
+export const getFavoriteCtrl = async (req, res) => {
+    const userID = req.user;
+    const favorite = await getFavorite(userID._id);
+    res.status(200).json({
+        status: 200,
+        message: 'Successfully found favorites',
+        data: favorite,
+    });
+};
+
+export const removeFavoriteCtrl = async (req, res, next) => {
+    const { favoriteID } = req.params;
+    const userID = req.user._id;
+    const favorite = await removeFavorite(favoriteID, userID);
+    if (favorite == null) {
+        console.log('Favorite not found');
+
+        next(createHttpError(404, 'Favorite not found'));
+        return;
     }
+    res.status(204).send();
 };
