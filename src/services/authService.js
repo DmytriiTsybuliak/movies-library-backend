@@ -4,6 +4,12 @@ import { env } from "../utils/env.js";
 import createHttpError from "http-errors";
 import { SessionsCollection } from "../db/models/session.js";
 import { parseTimeString } from "../utils/parseTimeString.js";
+import { sendEmail } from "../utils/sendMail.js";
+import { SMTP, TEMPLATES_DIR } from "../constants/index.js";
+import handlebars from 'handlebars';
+import path from 'node:path';
+import fs from 'node:fs/promises';
+import bcrypt from 'bcrypt';
 
 const generateAccessToken = (userId) => {
     return jwt.sign({ id: userId }, env("JWT_SECRET"), {
@@ -98,4 +104,63 @@ export const refreshUsersSession = async ({ sessionId, refreshToken }) => {
         userId: session.userId,
         ...newSession,
     });
+};
+
+export const requestResetToken = async (email) => {
+    const user = await User.findOne({ email });
+    if (!user) throw createHttpError(404, 'User with this email not found');
+    const resetToken = jwt.sign(
+        {
+            sub: user._id,
+            email,
+        },
+        env('JWT_SECRET'),
+        {
+            expiresIn: env('JWT_EXPIRES_IN'),
+        },
+    );
+    const resetPasswordTemplatePath = path.join(
+        TEMPLATES_DIR,
+        'reset-pass-email.html',
+    );
+    const templateSource = (
+        await fs.readFile(resetPasswordTemplatePath)
+    ).toString();
+    const template = handlebars.compile(templateSource);
+    const html = template({
+        name: user.name,
+        link: `${env('APP_DOMAIN')}/reset-password?token=${resetToken}`,
+    });
+
+    await sendEmail({
+        from: env(SMTP.SMTP_FROM), // sender address
+        to: email, // list of receivers
+        subject: "Reset your password ✔", // Subject line
+        html, //sendMail utility
+    });
+};
+
+
+export const resetPassword = async (token, newPassword) => {
+    let entries;
+    try {
+        entries = jwt.verify(token, env('JWT_SECRET'));
+    } catch (err) {
+        if (err instanceof Error) throw createHttpError(401, err.message);
+        throw err;
+    }
+    const user = await User.findOne({
+        email: entries.email,
+        _id: entries.sub,
+    });
+    if (!user) throw createHttpError(404, 'User with this email not found');
+
+    //checking if the new password the same as the old one
+    const existedPassword = await user.correctPassword(newPassword, user.password);
+    if (existedPassword) throw createHttpError(404, 'New password must not match the old one');
+    const encryptedPassword = await bcrypt.hash(newPassword, 12);
+    await User.updateOne(
+        { _id: user._id },
+        { password: encryptedPassword },
+    );
 };
