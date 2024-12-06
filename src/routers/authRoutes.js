@@ -13,4 +13,7 @@ authRouter.post('/refresh', controllerWr(refreshUserSessionController));
 authRouter.post('/request-reset-email', validateMiddleware(requestResetEmailSchema), controllerWr(requestResetEmailController));
 authRouter.post('/reset-password', validateMiddleware(resetPassSchema), controllerWr(resetPassController));
 
+//http://localhost:5173/confirm-google-auth
+//https://tmdb-movies-library.vercel.app/confirm-google-auth
+
 export default authRouter;
