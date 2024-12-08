@@ -10,6 +10,8 @@ import handlebars from 'handlebars';
 import path from 'node:path';
 import fs from 'node:fs/promises';
 import bcrypt from 'bcrypt';
+import { getFullNameFromGoogleTokenPayload, validateCode } from "../utils/googleOAuth2.js";
+import { randomBytes } from "node:crypto";
 
 const generateAccessToken = (userId) => {
     return jwt.sign({ id: userId }, env("JWT_SECRET"), {
@@ -163,4 +165,35 @@ export const resetPassword = async (token, newPassword) => {
         { _id: user._id },
         { password: encryptedPassword },
     );
+};
+
+
+export const loginOrSignupWithGoogle = async (code) => {
+    const loginTicket = await validateCode(code);
+    const payload = loginTicket.getPayload();
+    if (!payload) throw createHttpError(401);
+
+    let user = await User.findOne({ email: payload.email });
+
+    //clear all sessions, where refreshToken expired for current user._id
+    await SessionsCollection.deleteMany({
+        userId: user._id,
+        refreshTokenValidUntil: { $lt: new Date() },
+    });
+
+    if (!user) {
+        const password = await bcrypt.hash(randomBytes(10), 10);
+        user = await User.create({
+            name: getFullNameFromGoogleTokenPayload(payload),
+            email: payload.email,
+            password,
+        });
+    }
+
+    const newSession = createSession();
+
+    return await SessionsCollection.create({
+        userId: user._id,
+        ...newSession,
+    });
 };

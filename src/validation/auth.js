@@ -20,3 +20,7 @@ export const requestResetEmailSchema = Joi.object({
 export const resetPassSchema = Joi.object({
     password: Joi.string().required(),
 });
+
+export const loginWithGoogleOAuthSchema = Joi.object({
+    code: Joi.string().required(),
+});
