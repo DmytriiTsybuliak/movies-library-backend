@@ -6,6 +6,7 @@ import { loginUserSchema, loginWithGoogleOAuthSchema, registerUserSchema, reques
 
 const authRouter = Router();
 
+//basic
 authRouter.post('/register', validateMiddleware(registerUserSchema), controllerWr(registerController));
 authRouter.post('/login', validateMiddleware(loginUserSchema), controllerWr(loginController));
 authRouter.post('/logout', controllerWr(logoutController));
