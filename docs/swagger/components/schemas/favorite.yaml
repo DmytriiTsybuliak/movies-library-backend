@@ -1,0 +1,45 @@
+type: object
+required:
+  - movieId
+  - title
+  - releaseDate
+  - genre
+  - type
+  - userId
+properties:
+  _id:
+    description: 'ID'
+    type: string
+    example: 34e4decdd286b30065d54af9
+  movieId:
+    description: 'Movie/TV ID for TMB API'
+    type: string
+    example: '6744b9fa34234548ecf5ffeb'
+  title:
+    description: 'Movie/TV title'
+    type: string
+    example: 'Deadpool'
+  releaseDate:
+    description: 'Movie/TV releaseDate'
+    type: string
+    example: '2025'
+  genre:
+    description: 'Movie/TV genre'
+    type: string
+    example: 'Action'
+  type:
+    description: 'Movie or TV'
+    type: string
+    example: 'Movie'
+  userId:
+    description: 'User ID of user'
+    type: string
+    example: '6744b9fa34234548ecf5ffeb'
+  createdAt:
+    description: 'Movie/TV createdAt'
+    type: string
+    example: '2024-11-30T18:51:57.277Z'
+  updatedAt:
+    description: 'Movie/TV updatedAt'
+    type: string
+    example: '2024-11-30T18:51:57.277Z'

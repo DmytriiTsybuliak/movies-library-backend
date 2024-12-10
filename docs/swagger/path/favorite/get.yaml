@@ -1,0 +1,30 @@
+tags:
+  - Favorite
+summary: Finds Favorites
+description: Finds Favorites by user
+operationId: getFavorites
+responses:
+  '200':
+    description: 'OK'
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - data
+          properties:
+            status:
+              type: integer
+              example: 200
+            message:
+              type: string
+              example: Successfully found favorites
+            data:
+              type: object
+              $ref: '../../components/schemas/favorite.yaml'
+  '401':
+    $ref: ../../components/responses/401.yaml
+security:
+  - bearerAuth: []

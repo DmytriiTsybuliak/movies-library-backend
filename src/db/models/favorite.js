@@ -13,6 +13,12 @@ const favoriteSchema = new Schema(
         genre: {
             type: String,
         },
+        type: {
+            type: String,
+        },
+        movieId: {
+            type: String,
+        },
         userId: {
             type: Schema.Types.ObjectId,
             ref: 'user',

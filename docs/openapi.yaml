@@ -1,0 +1,34 @@
+openapi: 3.1.0
+info:
+  version: 1.0.0
+  title: TV Library Backend
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  description: |-
+    This is a documentation for TV Library Server based on the OpenAPI 3.0 specification. 
+    Some useful links:
+    - [TV Library Backend repository](https://github.com/DmytriiTsybuliak/movies-library-backend)
+    - [The source API definition for the TV Library Backend](https://github.com/DmytriiTsybuliak/movies-library-backend/docs/openapi.yaml)
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+tags:
+  - name: Favorite
+    description: List of saved movies and TV shows for users.
+  - name: Auth
+    description: Operations about user.
+servers:
+  - url: http://localhost:6000
+  - url: https://example.com/api/v1
+paths:
+  /favorite:
+    get:
+      $ref: './swagger/path/favorite/get.yaml'
+    post:
+      $ref: './swagger/path/favorite/post.yaml'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
