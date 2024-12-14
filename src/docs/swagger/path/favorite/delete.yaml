@@ -1,0 +1,20 @@
+tags:
+  - Favorite
+summary: Delete Favorite
+description: Delete movie or TV from the favorite list
+operationId: delFavorite
+parameters:
+  - in: path
+    name: favoriteID
+    description: favoriteID to Delete
+    required: true
+    schema:
+      type: integer
+      format: int64
+responses:
+  '204':
+    description: 'OK'
+  '404':
+    description: 'Favorite item not found'
+security:
+  - bearerAuth: []

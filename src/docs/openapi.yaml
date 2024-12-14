@@ -26,6 +26,9 @@ paths:
       $ref: './swagger/path/favorite/get.yaml'
     post:
       $ref: './swagger/path/favorite/post.yaml'
+  /favorite/{favoriteID}:
+    delete:
+      $ref: './swagger/path/favorite/delete.yaml'
 components:
   securitySchemes:
     bearerAuth:

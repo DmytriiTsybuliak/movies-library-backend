@@ -29,9 +29,8 @@ export const removeFavoriteCtrl = async (req, res, next) => {
     const userID = req.user._id;
     const favorite = await removeFavorite(favoriteID, userID);
     if (favorite == null) {
-        console.log('Favorite not found');
-
-        next(createHttpError(404, 'Favorite not found'));
+        // console.log('Favorite item not found');
+        next(createHttpError(404, 'Favorite item not found'));
         return;
     }
     res.status(204).send();
