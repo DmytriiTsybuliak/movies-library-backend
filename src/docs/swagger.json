@@ -7,14 +7,11 @@
       "name": "Apache 2.0",
       "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "description": "This is a documentation for TV Library Server based on the OpenAPI 3.0 specification. \nSome useful links:\n- [TV Library Backend repository](https://github.com/DmytriiTsybuliak/movies-library-backend)\n- [The source API definition for the TV Library Backend](https://github.com/DmytriiTsybuliak/movies-library-backend/docs/openapi.yaml)"
+    "description": "This is a documentation for TV Library Server based on the OpenAPI 3.0 specification. \nSome useful links:\n- [TV Library Backend repository](https://github.com/DmytriiTsybuliak/movies-library-backend)\n- [The source API definition for the TV Library Backend](https://github.com/DmytriiTsybuliak/movies-library-backend/src/docs/openapi.yaml)"
   },
   "servers": [
     {
-      "url": "http://localhost:6000"
-    },
-    {
-      "url": "https://example.com/api/v1"
+      "url": "https://movies-library-backend-s1fd.onrender.com"
     }
   ],
   "tags": [

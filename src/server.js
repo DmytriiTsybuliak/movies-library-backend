@@ -4,7 +4,6 @@ import cors from 'cors';
 import { env } from './utils/env.js';
 import router from './routers/index.js';
 import cookieParser from 'cookie-parser';
-import { swaggerDocs } from './middlewares/swaggerMiddleware.js';
 
 const PORT = Number(env('PORT', '6000'));
 
@@ -16,7 +15,6 @@ export const setupServer = () => {
 
 
     app.use('/', router);
-    app.use('/api-docs', swaggerDocs());
     app.use(
         pino({
             transport: {
