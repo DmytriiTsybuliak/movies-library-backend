@@ -21,6 +21,30 @@ tags:
 servers:
   - url: https://movies-library-backend-s1fd.onrender.com
 paths:
+  /auth/register:
+    post:
+      $ref: './swagger/path/auth/register.yaml'
+  /auth/login:
+    post:
+      $ref: './swagger/path/auth/login.yaml'
+  /auth/logout:
+    post:
+      $ref: './swagger/path/auth/logout.yaml'
+  /auth/refresh:
+    post:
+      $ref: './swagger/path/auth/refresh.yaml'
+  /auth/request-reset-email:
+    post:
+      $ref: './swagger/path/auth/request-reset-email.yaml'
+  /auth/reset-password:
+    post:
+      $ref: './swagger/path/auth/reset-password.yaml'
+  /auth/get-oauth-url:
+    post:
+      $ref: './swagger/path/auth/get-oauth-url.yaml'
+  /auth/confirm-google-auth:
+    post:
+      $ref: './swagger/path/auth/confirm-google-auth.yaml'
   /favorite:
     get:
       $ref: './swagger/path/favorite/get.yaml'
@@ -34,3 +58,7 @@ components:
     bearerAuth:
       type: http
       scheme: bearer
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionId

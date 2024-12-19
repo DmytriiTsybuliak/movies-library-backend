@@ -14,7 +14,7 @@ authRouter.post('/refresh', controllerWr(refreshUserSessionController));
 
 //email reset
 authRouter.post('/request-reset-email', validateMiddleware(requestResetEmailSchema), controllerWr(requestResetEmailController));
-authRouter.post('/reset-password', validateMiddleware(resetPassSchema), controllerWr(resetPassController));
+authRouter.post('/reset-password/', validateMiddleware(resetPassSchema), controllerWr(resetPassController));
 
 //google Oauth
 authRouter.get('/get-oauth-url', controllerWr(getGoogleOAuthUrlController));

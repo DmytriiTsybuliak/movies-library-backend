@@ -1,0 +1,75 @@
+tags:
+  - Auth
+summary: Logs user into the system
+description: ''
+operationId: loginUser
+requestBody:
+  content:
+    application/json:
+      schema:
+        $ref: ../../components/schemas/user.yaml
+responses:
+  '200':
+    description: 'OK'
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - data
+          properties:
+            status:
+              type: integer
+              example: 200
+            message:
+              type: string
+              example: Successfully logged in
+            data:
+              type: object
+              properties:
+                accessToken:
+                  type: string
+                  example: 34e4decdd286b30065d54af9
+  '404':
+    description: 'User with this email not found'
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - error
+          properties:
+            status:
+              type: integer
+              example: 404
+            message:
+              type: string
+              example: Something went wrong
+            error:
+              type: string
+              example: User with this email not found
+  '401':
+    description: 'Unauthorized. Password is not correct!'
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - error
+          properties:
+            status:
+              type: integer
+              example: 401
+            message:
+              type: string
+              example: Something went wrong
+            error:
+              type: string
+              example: Unauthorized. Password is not correct!
+security: []

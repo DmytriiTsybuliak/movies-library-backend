@@ -1,0 +1,13 @@
+tags:
+  - Auth
+summary: Logs out current logged in user session
+description: ''
+operationId: logoutUser
+parameters: []
+responses:
+  '204':
+    description: successful operation
+  '404':
+    description: 'Something went wrong'
+security:
+  - bearerAuth: []

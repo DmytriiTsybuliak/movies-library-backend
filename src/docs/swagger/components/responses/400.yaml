@@ -13,7 +13,7 @@ content:
           example: 400
         message:
           type: string
-          example: User ID must be an integer and larger than 0.
+          example: BadRequestError
         data:
           type: object
           required:
@@ -21,4 +21,4 @@ content:
           properties:
             message:
               type: string
-              example: 'Access token expired'
+              example: '\"email\" is required'

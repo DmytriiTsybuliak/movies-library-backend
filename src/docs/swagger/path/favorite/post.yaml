@@ -5,7 +5,7 @@ description: Add movie or TV to the favorite list
 operationId: addFavorites
 requestBody:
   content:
-    propertyName:
+    application/json:
       schema:
         $ref: ../../components/schemas/favorite.yaml
 responses:

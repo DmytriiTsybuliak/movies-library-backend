@@ -36,6 +36,7 @@ export const setupServer = () => {
     app.use((err, req, res, next) => {
         const status = err.status || 500;
         res.status(status).json({
+            status: status,
             message: 'Something went wrong',
             error: err.message,
         });

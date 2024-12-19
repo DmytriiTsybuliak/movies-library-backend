@@ -3,16 +3,14 @@ import { loginOrSignupWithGoogle, loginService, logoutService, refreshUsersSessi
 import { generateAuthUrl } from "../utils/googleOAuth2.js";
 
 export const registerController = async (req, res) => {
-    const { user, token } = await registerService(req.body);
+    const { user } = await registerService(req.body);
 
     res.status(201).json({
-        status: 'success',
-        token,
+        status: 201,
+        message: 'Successfully created user',
         data: {
-            user: {
-                id: user._id,
-                email: user.email,
-            },
+            _id: user._id,
+            email: user.email,
         },
     });
 };
@@ -22,7 +20,7 @@ export const loginController = async (req, res) => {
 
     res.cookie('refreshToken', session.refreshToken, {
         httpOnly: true,
-        expires: new Date(Date.now() + ONE_DAY),
+        expires: session.refreshTokenValidUntil,
     });
     res.cookie('sessionId', session._id, {
         httpOnly: true,
@@ -30,7 +28,8 @@ export const loginController = async (req, res) => {
     });
 
     res.status(200).json({
-        status: 'success',
+        status: 200,
+        message: 'Successfully logged in',
         data: {
             accessToken: session.accessToken,
 
@@ -79,9 +78,8 @@ export const refreshUserSessionController = async (req, res) => {
 export const requestResetEmailController = async (req, res) => {
     await requestResetToken(req.body.email);
     res.json({
-        message: 'Reset password email was successfully sent!',
         status: 200,
-        data: {},
+        message: 'Reset password email was successfully sent!',
     });
 };
 
@@ -91,9 +89,8 @@ export const resetPassController = async (req, res) => {
 
     await resetPassword(token, password);
     res.json({
-        message: 'Password was successfully reset!',
         status: 200,
-        data: {},
+        message: 'Password was successfully reset!',
     });
 };
 

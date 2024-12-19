@@ -29,10 +29,10 @@ export const registerService = async (payload) => {
     const checkEmailExist = await User.findOne({ email: email });
     if (checkEmailExist) throw createHttpError(409, 'Email in use');
     const user = await User.create(payload);
-    const token = generateAccessToken(user._id);
+    // const token = generateAccessToken(user._id);
     // const refreshToken = generateRefreshToken(user._id);
 
-    return { user, token };
+    return { user };
 };
 
 export const loginService = async (payload) => {
@@ -41,7 +41,7 @@ export const loginService = async (payload) => {
 
     if (!user) throw createHttpError(404, 'User with this email not found');
     if (await user.correctPassword(password, user.password) === false) {
-        throw createHttpError(401, `Unauthorized - password is not correct`);
+        throw createHttpError(401, `Unauthorized. Password is not correct!`);
     }
 
     //clear all sessions, where refreshToken expired for current user._id
@@ -55,7 +55,7 @@ export const loginService = async (payload) => {
 
     const refreshToken = generateRefreshToken(user._id);
     // console.log('refreshToken', refreshToken);
-
+    // console.log('refreshTokenExpire', refreshToken);
     return await SessionsCollection.create({
         userId: user._id,
         accessToken,
