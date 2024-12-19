@@ -40,7 +40,7 @@ paths:
     post:
       $ref: './swagger/path/auth/reset-password.yaml'
   /auth/get-oauth-url:
-    post:
+    get:
       $ref: './swagger/path/auth/get-oauth-url.yaml'
   /auth/confirm-google-auth:
     post:
