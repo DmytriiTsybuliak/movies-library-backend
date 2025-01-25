@@ -10,7 +10,11 @@ const PORT = Number(env('PORT', '6000'));
 export const setupServer = () => {
     const app = express();
     app.use(express.json());
-    app.use(cors());
+    const corsOptions = {
+        origin: ['https://tmdb-movies-library.vercel.app/', 'http://localhost:5173', 'https://movies-library-backend-s1fd.onrender.com'], // URL of websites
+        credentials: true, // turns on credentials
+    };
+    app.use(cors(corsOptions));
     app.use(cookieParser());
 
 
