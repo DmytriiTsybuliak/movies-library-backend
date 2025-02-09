@@ -21,10 +21,12 @@ export const loginController = async (req, res) => {
     res.cookie('refreshToken', session.refreshToken, {
         httpOnly: true,
         expires: session.refreshTokenValidUntil,
+        sameSite: 'lax'
     });
     res.cookie('sessionId', session._id, {
         httpOnly: true,
         expires: new Date(Date.now() + ONE_DAY),
+        sameSite: 'lax'
     });
 
     res.status(200).json({
@@ -50,11 +52,13 @@ export const logoutController = async (req, res) => {
 const setupSession = (res, session) => {
     res.cookie('refreshToken', session.refreshToken, {
         httpOnly: true,
-        expires: new Date(Date.now() + ONE_DAY),
+        expires: session.refreshTokenValidUntil,
+        sameSite: 'lax'
     });
     res.cookie('sessionId', session._id, {
         httpOnly: true,
         expires: new Date(Date.now() + ONE_DAY),
+        sameSite: 'lax'
     });
 };
 
