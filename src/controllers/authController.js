@@ -17,24 +17,7 @@ export const registerController = async (req, res) => {
 
 export const loginController = async (req, res) => {
     const session = await loginService(req.body);
-
-    res.cookie('refreshToken', session.refreshToken, {
-        httpOnly: true,
-        path: '/',
-        // secure: true,
-        expires: session.refreshTokenValidUntil,
-        // sameSite: 'lax'
-        sameSite: 'None',
-    });
-    res.cookie('sessionId', session._id, {
-        httpOnly: true,
-        path: '/',
-        // secure: true,
-        expires: new Date(Date.now() + ONE_DAY),
-        sameSite: 'None',
-        // sameSite: 'lax'
-    });
-
+    setupSession(res, session);
     res.status(200).json({
         status: 200,
         message: 'Successfully logged in',
@@ -57,16 +40,20 @@ export const logoutController = async (req, res) => {
 
 const setupSession = (res, session) => {
     res.cookie('refreshToken', session.refreshToken, {
-        // httpOnly: true,
-        secure: true,
-        expires: session.refreshTokenValidUntil,
-        sameSite: 'lax'
+        httpOnly: true,
+        maxAge: new Date(session.refreshTokenValidUntil) - Date.now(),
+        sameSite: 'lax',
+        path: '/',
     });
     res.cookie('sessionId', session._id, {
         // httpOnly: true,
-        secure: true,
-        expires: new Date(Date.now() + ONE_DAY),
-        sameSite: 'lax'
+        // secure: true,
+        // expires: new Date(Date.now() + ONE_DAY),
+        // sameSite: 'lax'
+        httpOnly: true,
+        maxAge: 24 * 60 * 60 * 1000, // 1 день
+        sameSite: 'lax',
+        path: '/',
     });
 };
 
