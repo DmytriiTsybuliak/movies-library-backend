@@ -44,16 +44,14 @@ const setupSession = (res, session) => {
         maxAge: new Date(session.refreshTokenValidUntil) - Date.now(),
         sameSite: 'lax',
         path: '/',
+        secure: true,
     });
     res.cookie('sessionId', session._id, {
-        // httpOnly: true,
-        // secure: true,
-        // expires: new Date(Date.now() + ONE_DAY),
-        // sameSite: 'lax'
         httpOnly: true,
         maxAge: 24 * 60 * 60 * 1000, // 1 день
         sameSite: 'lax',
         path: '/',
+        secure: true,
     });
 };
 
