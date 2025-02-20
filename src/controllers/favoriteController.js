@@ -16,11 +16,11 @@ export const addFavoriteCtrl = async (req, res) => {
 
 export const getFavoriteCtrl = async (req, res) => {
     const userID = req.user;
-    const favorite = await getFavorite(userID._id);
+    const favorites = await getFavorite(userID._id);
     res.status(200).json({
         status: 200,
         message: 'Successfully found favorites',
-        data: favorite,
+        data: favorites,
     });
 };
 

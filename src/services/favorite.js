@@ -1,4 +1,5 @@
 import { FavoriteCollection } from "../db/models/favorite.js";
+import { User } from "../db/models/userModel.js";
 
 export const addFavorite = async (userId, data) => {
     const { title, releaseDate, genre, type, movieID } = data;
@@ -14,7 +15,13 @@ export const addFavorite = async (userId, data) => {
 };
 
 export const getFavorite = async (userId) => {
-    return await FavoriteCollection.find({ userId: userId });
+    const user = await User.findById(userId);
+    if (!user) {
+        return;
+    }
+    const favorites = await FavoriteCollection.find({ userId: userId });
+
+    return { user, favorites };
 };
 
 export const removeFavorite = async (id, userId) => {

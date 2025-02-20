@@ -12,6 +12,7 @@ import fs from 'node:fs/promises';
 import bcrypt from 'bcrypt';
 import { getFullNameFromGoogleTokenPayload, validateCode } from "../utils/googleOAuth2.js";
 import { randomBytes } from "node:crypto";
+import { FavoriteCollection } from "../db/models/favorite.js";
 
 const generateAccessToken = (userId) => {
     return jwt.sign({ id: userId }, env("JWT_SECRET"), {
@@ -56,13 +57,21 @@ export const loginService = async (payload) => {
     const refreshToken = generateRefreshToken(user._id);
     // console.log('refreshToken', refreshToken);
     // console.log('refreshTokenExpire', refreshToken);
-    return await SessionsCollection.create({
+
+    const favorites = await FavoriteCollection.find({ userId: user._id });
+    // console.log('favorites: ', favorites);
+
+
+
+    const session = await SessionsCollection.create({
         userId: user._id,
         accessToken,
         refreshToken,
         accessTokenValidUntil: new Date(Date.now() + parseTimeString(env('JWT_EXPIRES_IN'))),
         refreshTokenValidUntil: new Date(Date.now() + parseTimeString(env('JWT_REFRESH_EXPIRES_IN'))),
     });
+    return { session, favorites, user };
+
 };
 
 export const logoutService = async (sessionId) => {

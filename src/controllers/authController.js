@@ -1,4 +1,3 @@
-import { ONE_DAY } from "../constants/index.js";
 import { loginOrSignupWithGoogle, loginService, logoutService, refreshUsersSession, registerService, requestResetToken, resetPassword } from "../services/authService.js";
 import { generateAuthUrl } from "../utils/googleOAuth2.js";
 
@@ -16,12 +15,14 @@ export const registerController = async (req, res) => {
 };
 
 export const loginController = async (req, res) => {
-    const session = await loginService(req.body);
+    const { session, favorites, user } = await loginService(req.body);
     setupSession(res, session);
     res.status(200).json({
         status: 200,
         message: 'Successfully logged in',
         data: {
+            user: user,
+            favorites: favorites,
             accessToken: session.accessToken,
 
         },
@@ -48,7 +49,7 @@ const setupSession = (res, session) => {
     });
     res.cookie('sessionId', session._id, {
         httpOnly: true,
-        maxAge: 24 * 60 * 60 * 1000, // 1 день
+        maxAge: 24 * 60 * 60 * 1000,
         sameSite: 'none',
         path: '/',
         secure: true,
