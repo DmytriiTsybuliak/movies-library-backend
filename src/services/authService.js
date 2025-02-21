@@ -33,7 +33,24 @@ export const registerService = async (payload) => {
     // const token = generateAccessToken(user._id);
     // const refreshToken = generateRefreshToken(user._id);
 
-    return { user };
+    const accessToken = generateAccessToken(user._id);
+    // console.log('accessToken', accessToken);
+
+    const refreshToken = generateRefreshToken(user._id);
+    // console.log('refreshToken', refreshToken);
+    // console.log('refreshTokenExpire', refreshToken);
+
+    // const favorites = await FavoriteCollection.find({ userId: user._id });
+    // console.log('favorites: ', favorites);
+
+    const session = await SessionsCollection.create({
+        userId: user._id,
+        accessToken,
+        refreshToken,
+        accessTokenValidUntil: new Date(Date.now() + parseTimeString(env('JWT_EXPIRES_IN'))),
+        refreshTokenValidUntil: new Date(Date.now() + parseTimeString(env('JWT_REFRESH_EXPIRES_IN'))),
+    });
+    return { session, user };
 };
 
 export const loginService = async (payload) => {
@@ -60,8 +77,6 @@ export const loginService = async (payload) => {
 
     const favorites = await FavoriteCollection.find({ userId: user._id });
     // console.log('favorites: ', favorites);
-
-
 
     const session = await SessionsCollection.create({
         userId: user._id,
@@ -201,8 +216,13 @@ export const loginOrSignupWithGoogle = async (code) => {
 
     const newSession = createSession();
 
-    return await SessionsCollection.create({
+    const favorites = await FavoriteCollection.find({ userId: user._id });
+    // console.log('favorites: ', favorites);
+
+    const session = await SessionsCollection.create({
         userId: user._id,
         ...newSession,
     });
+
+    return { session, favorites, user };
 };
