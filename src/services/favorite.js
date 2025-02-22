@@ -20,8 +20,7 @@ export const getFavorite = async (userId) => {
         return;
     }
     const favorites = await FavoriteCollection.find({ userId: userId });
-
-    return { user, favorites };
+    return favorites;
 };
 
 export const removeFavorite = async (id, userId) => {
