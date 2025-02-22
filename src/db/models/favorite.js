@@ -2,22 +2,50 @@ import { model, Schema } from 'mongoose';
 
 const favoriteSchema = new Schema(
     {
-        title: {
+        backdrop_path: {
             type: String,
-            required: [true, 'Title is required'],
+            required: true,
         },
-        releaseDate: {
+        genres: {
+            type: Array,
+            required: true,
+        },
+        id: {
+            type: Number,
+            required: true,
+        },
+        original_title: {
+            type: String,
+            required: true,
+        },
+        overview: {
+            type: String,
+            required: [true, 'Overview is required'],
+        },
+        poster_path: {
+            type: String,
+            required: true,
+        },
+        release_Date: {
             type: String,
             required: [true, 'ReleaseDate is required'],
         },
-        genre: {
+        title: {
             type: String,
+            required: true,
         },
-        type: {
-            type: String,
+        vote_average: {
+            type: Number,
+            required: true,
         },
-        movieId: {
+        vote_count: {
+            type: Number,
+            required: true,
+        },
+        contentType: {
             type: String,
+            enum: ['movie', 'tv'],
+            required: true,
         },
         userId: {
             type: Schema.Types.ObjectId,
