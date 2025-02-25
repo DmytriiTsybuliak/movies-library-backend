@@ -30,25 +30,13 @@ export const registerService = async (payload) => {
     const checkEmailExist = await User.findOne({ email: email });
     if (checkEmailExist) throw createHttpError(409, 'Email in use');
     const user = await User.create(payload);
-    // const token = generateAccessToken(user._id);
-    // const refreshToken = generateRefreshToken(user._id);
-
-    const accessToken = generateAccessToken(user._id);
-    // console.log('accessToken', accessToken);
-
-    const refreshToken = generateRefreshToken(user._id);
-    // console.log('refreshToken', refreshToken);
-    // console.log('refreshTokenExpire', refreshToken);
-
+    const newSession = createSession();
     // const favorites = await FavoriteCollection.find({ userId: user._id });
     // console.log('favorites: ', favorites);
 
     const session = await SessionsCollection.create({
         userId: user._id,
-        accessToken,
-        refreshToken,
-        accessTokenValidUntil: new Date(Date.now() + parseTimeString(env('JWT_EXPIRES_IN'))),
-        refreshTokenValidUntil: new Date(Date.now() + parseTimeString(env('JWT_REFRESH_EXPIRES_IN'))),
+        ...newSession,
     });
     return { session, user };
 };
@@ -68,22 +56,13 @@ export const loginService = async (payload) => {
         refreshTokenValidUntil: { $lt: new Date() },
     });
 
-    const accessToken = generateAccessToken(user._id);
-    // console.log('accessToken', accessToken);
-
-    const refreshToken = generateRefreshToken(user._id);
-    // console.log('refreshToken', refreshToken);
-    // console.log('refreshTokenExpire', refreshToken);
-
+    //create new session
+    const newSession = createSession();
     const favorites = await FavoriteCollection.find({ userId: user._id });
-    // console.log('favorites: ', favorites);
 
     const session = await SessionsCollection.create({
         userId: user._id,
-        accessToken,
-        refreshToken,
-        accessTokenValidUntil: new Date(Date.now() + parseTimeString(env('JWT_EXPIRES_IN'))),
-        refreshTokenValidUntil: new Date(Date.now() + parseTimeString(env('JWT_REFRESH_EXPIRES_IN'))),
+        ...newSession,
     });
     return { session, favorites, user };
 
