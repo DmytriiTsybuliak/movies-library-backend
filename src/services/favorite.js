@@ -2,14 +2,32 @@ import { FavoriteCollection } from "../db/models/favorite.js";
 import { User } from "../db/models/userModel.js";
 
 export const addFavorite = async (userId, data) => {
-    const { title, releaseDate, genre, type, movieID } = data;
+    const {
+        backdrop_path,
+        genres,
+        media_id,
+        original_title,
+        overview,
+        poster_path,
+        release_Date,
+        title,
+        vote_average,
+        vote_count,
+        contentType,
+    } = data;
 
     return await FavoriteCollection.create({
-        title: title,
-        releaseDate: releaseDate,
-        genre: genre,
-        type: type,
-        movieId: movieID,
+        backdrop_path,
+        genres,
+        media_id,
+        original_title,
+        overview,
+        poster_path,
+        release_Date,
+        title,
+        vote_average,
+        vote_count,
+        contentType,
         userId: userId,
     });
 };
@@ -23,6 +41,6 @@ export const getFavorite = async (userId) => {
     return favorites;
 };
 
-export const removeFavorite = async (id, userId) => {
-    return await FavoriteCollection.findOneAndDelete({ _id: id, userId: userId });
+export const removeFavorite = async (media_id, type, userID) => {
+    return await FavoriteCollection.findOneAndDelete({ media_id: media_id, contentType: type, userId: userID });
 };

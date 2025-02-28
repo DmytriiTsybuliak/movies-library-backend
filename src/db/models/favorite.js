@@ -10,7 +10,7 @@ const favoriteSchema = new Schema(
             type: Array,
             required: true,
         },
-        id: {
+        media_id: {
             type: Number,
             required: true,
         },

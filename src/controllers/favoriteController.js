@@ -25,13 +25,14 @@ export const getFavoriteCtrl = async (req, res) => {
 };
 
 export const removeFavoriteCtrl = async (req, res, next) => {
-    const { favoriteID } = req.params;
+    const { media_id, contentType } = req.body;
     const userID = req.user._id;
-    const favorite = await removeFavorite(favoriteID, userID);
+    const favorite = await removeFavorite(media_id, contentType, userID);
+
     if (favorite == null) {
-        // console.log('Favorite item not found');
         next(createHttpError(404, 'Favorite item not found'));
         return;
     }
+
     res.status(204).send();
 };

@@ -13,6 +13,6 @@ favoriteRouter.get('/', controllerWr(getFavoriteCtrl));
 
 favoriteRouter.post('/', validateMiddleware(addFavSchema), controllerWr(addFavoriteCtrl));
 
-favoriteRouter.delete('/:favoriteID', controllerWr(removeFavoriteCtrl));
+favoriteRouter.delete('/', controllerWr(removeFavoriteCtrl));
 
 export default favoriteRouter;
