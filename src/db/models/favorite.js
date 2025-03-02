@@ -26,7 +26,7 @@ const favoriteSchema = new Schema(
             type: String,
             required: true,
         },
-        release_Date: {
+        release_date: {
             type: String,
             required: [true, 'ReleaseDate is required'],
         },
