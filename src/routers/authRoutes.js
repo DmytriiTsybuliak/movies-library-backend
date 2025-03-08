@@ -9,7 +9,7 @@ const authRouter = Router();
 //basic
 authRouter.post('/register', validateMiddleware(registerUserSchema), controllerWr(registerController));
 authRouter.post('/login', validateMiddleware(loginUserSchema), controllerWr(loginController));
-authRouter.post('/logout', controllerWr(logoutController));
+authRouter.delete('/logout', controllerWr(logoutController));
 authRouter.post('/refresh', controllerWr(refreshUserSessionController));
 
 //email reset
