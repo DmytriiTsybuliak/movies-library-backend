@@ -20,7 +20,7 @@ const favoriteSchema = new Schema(
         },
         overview: {
             type: String,
-            required: [true, 'Overview is required'],
+            required: false,
         },
         poster_path: {
             type: String,
