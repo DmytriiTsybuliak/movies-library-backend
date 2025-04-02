@@ -1,5 +1,5 @@
 import createHttpError from "http-errors";
-import { addFavorite, getFavorite, removeFavorite } from "../services/favorite.js";
+import { addFavorite, getFavorite, removeFavorite } from "../services/favoriteService.js";
 
 export const addFavoriteCtrl = async (req, res) => {
     const data = req.body;

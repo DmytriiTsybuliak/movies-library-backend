@@ -1,22 +1,15 @@
 import { Router } from 'express';
-import { protectMW } from '../middlewares/protectMiddleware';
-import { validateMiddleware } from '../middlewares/validateMiddleware';
-import {
-    getCurrentUserController,
-    updateUserController,
-    deleteUserController,
-} from '../controllers/userControllers';
-import { updateUserSchema } from '../schemas/userSchemas';
+import { validateMiddleware } from '../middlewares/validateMiddleware.js';
+import { deleteUserController, getCurrentUserController, updateUserController } from '../controllers/userControllers.js';
+import { protectMW } from '../middlewares/authMiddleware.js';
+import { UpdateUserSchema } from '../validation/user.js';
 
 const userRouter = Router();
 
-// Получение информации о текущем пользователе
 userRouter.get('/me', protectMW, getCurrentUserController);
 
-// Обновление данных пользователя
-userRouter.patch('/update', protectMW, validateMiddleware(updateUserSchema), updateUserController);
+userRouter.patch('/update', protectMW, validateMiddleware(UpdateUserSchema), updateUserController);
 
-// Удаление аккаунта
 userRouter.delete('/delete', protectMW, deleteUserController);
 
 export default userRouter;
