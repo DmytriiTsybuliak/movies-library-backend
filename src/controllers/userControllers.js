@@ -1,4 +1,3 @@
-import multer from "multer";
 import { getUser, removeUser, updateAvatar, updateUser } from "../services/userService.js";
 import cloudinary from "../utils/cloudinary.js";
 import fs from "fs";
