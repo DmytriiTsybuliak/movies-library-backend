@@ -1,5 +1,5 @@
 import multer from "multer";
-import { getUser, removeUser, updateUser } from "../services/userService.js";
+import { getUser, removeUser, updateAvatar, updateUser } from "../services/userService.js";
 import cloudinary from "../utils/cloudinary.js";
 import fs from "fs";
 
@@ -47,6 +47,9 @@ export const uploadAvatarUserController = async (req, res) => {
                 { quality: 'auto' },
             ],
         });
+        const userId = req.user._id;
+        await updateAvatar(userId, result.secure_url);
+
         fs.unlinkSync(req.file.path); // Delete the file after uploading to Cloudinary
         res.status(200).json({
             status: 200,
