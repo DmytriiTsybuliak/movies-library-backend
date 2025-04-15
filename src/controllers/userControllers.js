@@ -33,7 +33,7 @@ export const updateUserController = async (req, res) => {
 export const uploadAvatarUserController = async (req, res) => {
     try {
         if (!req.file) {
-            console.log('No file uploaded', req.body);
+            console.log('No file uploaded:', req.file);
 
             return res.status(400).json({
                 status: 400,
