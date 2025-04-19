@@ -39,8 +39,8 @@ export const updateUserController = async (req, res) => {
             data: user,
         });
     } catch (error) {
-        console.error('Upload error:', error);
-        res.status(500).json({ message: 'Upload failed', error });
+        console.error('Update error:', error);
+        res.status(500).json({ message: 'Update failed', error });
 
     }
 
