@@ -1,4 +1,4 @@
-import { getUser, removeUser, updateAvatar, updateUser } from "../services/userService.js";
+import { getUser, removeUser, updateUser } from "../services/userService.js";
 import cloudinary from "../utils/cloudinary.js";
 import fs from "fs";
 
@@ -14,46 +14,29 @@ export const getCurrentUserController = async (req, res) => {
 
 };
 
+
+
 export const updateUserController = async (req, res) => {
-    const userId = req.user._id;
-
-    const data = req.body;
-    const user = await updateUser(userId, data);
-
-    res.status(200).json({
-        status: 200,
-        message: 'Successfully updated user',
-        data: user,
-    });
-};
-
-
-
-export const uploadAvatarUserController = async (req, res) => {
     try {
-        if (!req.file) {
-            console.log('No file uploaded:', req.file);
-
-            return res.status(400).json({
-                status: 400,
-                message: 'No file uploaded',
-            });
-        }
-        const result = await cloudinary.uploader.upload(req.file.path, {
-            folder: 'avatars',
-            transformation: [
-                { width: 500, height: 500, crop: 'limit' },
-                { quality: 'auto' },
-            ],
-        });
         const userId = req.user._id;
-        await updateAvatar(userId, result.secure_url);
-
-        fs.unlinkSync(req.file.path); // Delete the file after uploading to Cloudinary
+        const data = req.body;
+        let avatarURL = null;
+        if (req.file) {
+            const result = await cloudinary.uploader.upload(req.file.path, {
+                folder: 'avatars',
+                transformation: [
+                    { width: 500, height: 500, crop: 'limit' },
+                    { quality: 'auto' },
+                ],
+            });
+            avatarURL = result.secure_url;
+            fs.unlinkSync(req.file.path); // Delete the file after uploading to Cloudinary
+        }
+        const user = await updateUser(userId, { ...data, avatarURL });
         res.status(200).json({
             status: 200,
-            message: 'Successfully uploaded avatar',
-            data: result.secure_url,
+            message: 'Successfully updated user',
+            data: user,
         });
     } catch (error) {
         console.error('Upload error:', error);
