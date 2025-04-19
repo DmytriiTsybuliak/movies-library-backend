@@ -20,7 +20,7 @@ export const updateUserController = async (req, res) => {
     try {
         const userId = req.user._id;
         const data = req.body;
-        let avatarURL = null;
+        let avatar = null;
         if (req.file) {
             const result = await cloudinary.uploader.upload(req.file.path, {
                 folder: 'avatars',
@@ -29,10 +29,10 @@ export const updateUserController = async (req, res) => {
                     { quality: 'auto' },
                 ],
             });
-            avatarURL = result.secure_url;
+            avatar = result.secure_url;
             fs.unlinkSync(req.file.path); // Delete the file after uploading to Cloudinary
         }
-        const user = await updateUser(userId, { ...data, avatarURL });
+        const user = await updateUser(userId, { ...data, avatar });
         res.status(200).json({
             status: 200,
             message: 'Successfully updated user',
