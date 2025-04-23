@@ -9,7 +9,7 @@ info:
     This is a documentation for TV Library Server based on the OpenAPI 3.0 specification. 
     Some useful links:
     - [TV Library Backend repository](https://github.com/DmytriiTsybuliak/movies-library-backend)
-    - [The source API definition for the TV Library Backend](https://github.com/DmytriiTsybuliak/movies-library-backend/src/docs/openapi.yaml)
+    - [The source API definition for the TV Library Backend](https://github.com/DmytriiTsybuliak/movies-library-backend/blob/main/src/docs/openapi.yaml)
 externalDocs:
   description: Find out more about Swagger
   url: http://swagger.io
@@ -22,37 +22,31 @@ servers:
   - url: https://movies-library-backend-s1fd.onrender.com
 paths:
   /auth/register:
-    post:
-      $ref: './swagger/path/auth/register.yaml'
+    $ref: './swagger/path/auth/register.yaml'
   /auth/login:
-    post:
-      $ref: './swagger/path/auth/login.yaml'
+    $ref: './swagger/path/auth/login.yaml'
   /auth/logout:
-    post:
-      $ref: './swagger/path/auth/logout.yaml'
+    $ref: './swagger/path/auth/logout.yaml'
   /auth/refresh:
-    post:
-      $ref: './swagger/path/auth/refresh.yaml'
+    $ref: './swagger/path/auth/refresh.yaml'
   /auth/request-reset-email:
-    post:
-      $ref: './swagger/path/auth/request-reset-email.yaml'
+    $ref: './swagger/path/auth/request-reset-email.yaml'
   /auth/reset-password:
-    post:
-      $ref: './swagger/path/auth/reset-password.yaml'
+    $ref: './swagger/path/auth/reset-password.yaml'
   /auth/get-oauth-url:
-    get:
-      $ref: './swagger/path/auth/get-oauth-url.yaml'
+    $ref: './swagger/path/auth/get-oauth-url.yaml'
   /auth/confirm-google-auth:
-    post:
-      $ref: './swagger/path/auth/confirm-google-auth.yaml'
+    $ref: './swagger/path/auth/confirm-google-auth.yaml'
   /favorite:
-    get:
-      $ref: './swagger/path/favorite/get.yaml'
-    post:
-      $ref: './swagger/path/favorite/post.yaml'
+    $ref: './swagger/path/favorite/favorite.yaml'
   /favorite/{favoriteID}:
-    delete:
-      $ref: './swagger/path/favorite/delete.yaml'
+    $ref: './swagger/path/favorite/delete.yaml'
+  /user/me:
+    $ref: './swagger/path/user/get.yaml'
+  /user/update:
+    $ref: './swagger/path/user/patch.yaml'
+  /user/delete:
+    $ref: './swagger/path/user/delete.yaml'
 components:
   securitySchemes:
     bearerAuth:

@@ -1,28 +1,29 @@
-tags:
-  - Auth
-summary: Getting Google OAuth url
-description: ''
-operationId: oauthURL
-responses:
-  '200':
-    description: 'OK'
-    content:
-      application/json:
-        schema:
-          type: object
-          properties:
-            status:
-              type: integer
-              example: 200
-            message:
-              type: string
-              example: Successfully get Google OAuth url!
-            data:
-              type: object
-              properties:
-                url:
-                  type: string
-                  example: 'https://accounts.google.com/o/oauth2/v2/auth...'
-  '404':
-    description: 'Something went wrong'
-security: []
+get:
+  tags:
+    - Auth
+  summary: Getting Google OAuth url
+  description: ''
+  operationId: oauthURL
+  responses:
+    '200':
+      description: 'OK'
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 200
+              message:
+                type: string
+                example: Successfully get Google OAuth url!
+              data:
+                type: object
+                properties:
+                  url:
+                    type: string
+                    example: 'https://accounts.google.com/o/oauth2/v2/auth...'
+    '404':
+      description: 'Something went wrong'
+  security: []

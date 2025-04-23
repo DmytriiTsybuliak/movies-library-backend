@@ -1,43 +1,44 @@
-tags:
-  - Auth
-summary: Create User
-description: Creation on new user
-operationId: reqUser
-requestBody:
-  content:
-    application/json:
-      schema:
-        $ref: ../../components/schemas/user.yaml
-responses:
-  '201':
-    description: 'OK'
+post:
+  tags:
+    - Auth
+  summary: Create User
+  description: Creation on new user
+  operationId: reqUser
+  requestBody:
     content:
       application/json:
         schema:
-          type: object
-          required:
-            - status
-            - message
-            - data
-          properties:
-            status:
-              type: integer
-              example: 201
-            message:
-              type: string
-              example: Successfully created user
-            data:
-              type: object
-              properties:
-                _id:
-                  type: integer
-                  format: int64
-                  example: 34e4decdd286b30065d54af9
-                email:
-                  type: string
-                  example: 'john@email.com'
-  '400':
-    $ref: ../../components/responses/400.yaml
-  '409':
-    $ref: ../../components/responses/409.yaml
-security: []
+          $ref: ../../components/schemas/user.yaml
+  responses:
+    '201':
+      description: 'OK'
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - status
+              - message
+              - data
+            properties:
+              status:
+                type: integer
+                example: 201
+              message:
+                type: string
+                example: Successfully created user
+              data:
+                type: object
+                properties:
+                  _id:
+                    type: integer
+                    format: int64
+                    example: 34e4decdd286b30065d54af9
+                  email:
+                    type: string
+                    example: 'john@email.com'
+    '400':
+      $ref: ../../components/responses/400.yaml
+    '409':
+      $ref: ../../components/responses/409.yaml
+  security: []

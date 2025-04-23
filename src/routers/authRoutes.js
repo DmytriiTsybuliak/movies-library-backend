@@ -20,7 +20,4 @@ authRouter.post('/reset-password/', validateMiddleware(resetPassSchema), control
 authRouter.get('/get-oauth-url', controllerWr(getGoogleOAuthUrlController));
 authRouter.post('/confirm-google-auth', validateMiddleware(loginWithGoogleOAuthSchema), controllerWr(loginWithGoogleController));
 
-//http://localhost:5173/confirm-google-auth
-//https://tmdb-movies-library.vercel.app/confirm-google-auth
-
 export default authRouter;

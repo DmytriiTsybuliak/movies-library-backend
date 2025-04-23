@@ -1,0 +1,13 @@
+delete:
+  tags:
+    - User
+  summary: Delete User
+  description: Delete user account
+  operationId: delUser
+  responses:
+    '204':
+      description: 'Successfully deleted user'
+    '404':
+      description: 'User not found'
+  security:
+    - bearerAuth: []

@@ -3,6 +3,7 @@ content:
   application/json:
     schema:
       type: object
+      additionalProperties: false
       required:
         - status
         - message
@@ -13,12 +14,17 @@ content:
           example: 401
         message:
           type: string
-          example: UnauthorizedError
+          example: 'UnauthorizedError'
+          maxLength: 100
+          pattern: '^[A-Za-z ]+$'
         data:
           type: object
+          additionalProperties: false
           required:
             - message
           properties:
             message:
               type: string
               example: 'Access token expired'
+              maxLength: 255
+              pattern: '^[A-Za-z ]+$'

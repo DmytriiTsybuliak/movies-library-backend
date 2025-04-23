@@ -1,0 +1,27 @@
+type: object
+additionalProperties: false
+properties:
+  _id:
+    type: string
+    example: '34e4decdd286b30065d54af9'
+  name:
+    type: string
+    example: 'Alex Brown'
+    maxLength: 100
+    pattern: '^[A-Za-z ]+$'
+  email:
+    type: string
+    example: 'john@email.com'
+    format: email
+    maxLength: 255
+    pattern: '^[^@]+@[^@]+\.[^@]+$'
+  gender:
+    type: string
+    enum: ['male', 'female']
+    example: 'male'
+  avatar:
+    type: string
+    example: 'https://res.cloudinary.com/dztvd7emk/image/upload/v1722885715/xc2jhivn8gspetouuroy.jpg'
+    format: uri
+    maxLength: 2083
+    pattern: '^https?://.*'
